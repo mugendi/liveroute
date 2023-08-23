@@ -46,6 +46,6 @@ liveRoute.use('/files', './routes/files.js');
 Now, behind the scenes, **liveRoute** will load the route file using: 
 `app.use('/files', require('./routes/files.js'))`
 
-Then, **liveRoute** uses [chokidar](https://www.npmjs.com/package/chokidar) to watch for any changes and reloads the file on change.
+Then, **liveRoute** uses [watch-modules](https://www.npmjs.com/package/watch-modules) to watch for any changes and reloads the route on change. This means that the route file and all other modules required by it are watched, ensuring your routes are properly live-reloaded.
 
 It is of course a little more complex than explained here but ion general, I use [this approach](https://codeburst.io/dont-use-nodemon-there-are-better-ways-fc016b50b45e) approach.
