@@ -1,24 +1,33 @@
 {
-    "name": "liveroute",
-    "version": "1.0.2",
-    "description": "Watch and reload your routes whenever they change without using tools like nodemon",
-    "main": "index.js",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
-    },
-    "keywords": [
-        "express",
-        "route",
-        "router",
-        "watch",
-        "live",
-        "reload"
-    ],
-    "author": "",
-    "license": "MIT",
-    "dependencies": {
-        "chokidar": "^3.5.3",
-        "clear-module": "^4.1.2",
-        "debug-symbols": "^1.0.2"
-    }
+  "name": "liveroute",
+  "version": "1.0.2",
+  "description": "Watch and reload your routes whenever they change without using tools like nodemon",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "express",
+    "route",
+    "router",
+    "watch",
+    "live",
+    "reload"
+  ],
+  "author": "Anthony Mugendi <ngurumugz@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "clear-module": "^4.1.2",
+    "debug-symbols": "^1.0.2",
+    "watch-modules": "^1.0.0"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mugendi/liveroute.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mugendi/liveroute/issues"
+  },
+  "homepage": "https://github.com/mugendi/liveroute#readme"
 }
