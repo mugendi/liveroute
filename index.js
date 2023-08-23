@@ -1,10 +1,9 @@
 /**
  * Copyright (c) 2023 Anthony Mugendi
- * 
+ *
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-
 
 const path = require('path');
 const fs = require('fs');
@@ -59,12 +58,22 @@ class HotRouter {
         // this ensures we only require the file when it has changed & not with every call
         chokidar.watch(routerPath).on('change', (filePath) => {
             // console.log(routerPath, ' changed...');
-            self.routers[routerPath] = reload(routerPath);
+            self.__load_route();
         });
 
         this.app.use(routePath, function (req, res, next) {
+
+            // ensure loaded
+            if (typeof self.routers[routerPath] !== 'function') {
+                self.__load_route();
+            }
+
             return self.routers[routerPath](req, res, next);
         });
+    }
+
+    __load_route() {
+        this.routers[routerPath] = reload(routerPath);
     }
 }
 
