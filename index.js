@@ -7,8 +7,11 @@
 
 const path = require('path');
 const fs = require('fs');
-const chokidar = require('chokidar');
-const reload = require('require-reload')(require);
+// const chokidar = require('chokidar');
+const clearModule = require('clear-module');
+const FamilyWatcher = require('../watch-modules');
+const familyWatcher = new FamilyWatcher();
+const logger = require('debug-symbols')('liveRoute');
 
 class HotRouter {
     constructor(app) {
@@ -20,60 +23,69 @@ class HotRouter {
         }
 
         this.routers = {};
+        this.watchers = {};
 
         this.app = app;
     }
 
-    use(routePath = '*', routerFile = null) {
+    async use(routePath = '*', routerFile = null) {
         let self = this;
-
-        if (
-            typeof routePath !== 'string' ||
-            // simple route validation
-            /^[\*\/]/.test(routePath) == false
-        ) {
-            throw new Error('2nd should be a route/path such as "/api"');
-        }
-
-        const routerPath = path.resolve(routerFile);
-        if (!fs.existsSync(routerPath)) {
-            throw new Error(`Route File "${routePath} does not exist!`);
-        }
-
-        const router = reload(routerPath);
-
-        // simple test to ensure is router
-        if (
-            !router ||
-            'stack' in router === false ||
-            !Array.isArray(router.stack)
-        ) {
-            throw new Error('1st argument should be a router object.');
-        }
-
-        // ok we can use this router
-        self.routers[routerPath] = router;
-
-        // watch & reload file on change
-        // this ensures we only require the file when it has changed & not with every call
-        chokidar.watch(routerPath).on('change', (filePath) => {
-            // console.log(routerPath, ' changed...');
-            self.__load_route();
-        });
-
-        this.app.use(routePath, function (req, res, next) {
-
-            // ensure loaded
-            if (typeof self.routers[routerPath] !== 'function') {
-                self.__load_route();
+        try {
+            if (
+                typeof routePath !== 'string' ||
+                // simple route validation
+                /^[\*\/]/.test(routePath) == false
+            ) {
+                throw new Error('2nd should be a route/path such as "/api"');
             }
 
-            return self.routers[routerPath](req, res, next);
-        });
+            const routerPath = path.resolve(routerFile);
+            if (!fs.existsSync(routerPath)) {
+                throw new Error(`Route File "${routePath} does not exist!`);
+            }
+
+            const { router } = this.__load_route(routerPath);
+
+            // simple test to ensure is router
+            if (
+                !router ||
+                'stack' in router === false ||
+                !Array.isArray(router.stack)
+            ) {
+                throw new Error('1st argument should be a router object.');
+            }
+
+            let watcher = await familyWatcher.watch(routerPath);
+            watcher.on('change', (filePath) => {
+                logger.info(`Reloading route file: ${routerFile}`);
+                this.__load_route(routerPath);
+            });
+
+            // we noe use 'app.use' so that we can pass the request to our route
+            this.app.use(routePath, function (req, res, next) {
+                // ensure loaded
+                if (typeof self.routers[routerPath].router !== 'function') {
+                    self.__load_route(routerPath);
+                }
+
+                return self.routers[routerPath].router(req, res, next);
+            });
+        } catch (error) {
+            throw error;
+        }
     }
 
-    __load_route() {
-        this.routers[routerPath] = reload(routerPath);
+    __load_route(routerPath) {
+        // always clear to ensure fresh requires
+        clearModule(routerPath);
+
+        // NOTE: We store the router in this.routers[routerPath].router
+        // this allows us to simply update this object without running app.use multiple times
+
+        // router...
+        this.routers[routerPath] = { router: require(routerPath) };
+
+        return this.routers[routerPath];
     }
 }
 
