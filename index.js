@@ -7,10 +7,9 @@
 
 const path = require('path');
 const fs = require('fs');
-// const chokidar = require('chokidar');
 const clearModule = require('clear-module');
-const FamilyWatcher = require('../watch-modules');
-const familyWatcher = new FamilyWatcher();
+const WatchModules = require('watch-modules');
+const watchModules = new WatchModules();
 const logger = require('debug-symbols')('liveRoute');
 
 class HotRouter {
@@ -55,7 +54,7 @@ class HotRouter {
                 throw new Error('1st argument should be a router object.');
             }
 
-            let watcher = await familyWatcher.watch(routerPath);
+            let watcher = watchModules.watch(routerPath);
             watcher.on('change', (filePath) => {
                 logger.info(`Reloading route file: ${routerFile}`);
                 this.__load_route(routerPath);
