@@ -58,7 +58,7 @@ class HotRouter {
         // watch & reload file on change
         // this ensures we only require the file when it has changed & not with every call
         chokidar.watch(routerPath).on('change', (filePath) => {
-            console.log(routerPath, ' changed...');
+            // console.log(routerPath, ' changed...');
             self.routers[routerPath] = reload(routerPath);
         });
 
