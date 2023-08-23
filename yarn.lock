@@ -9,7 +9,7 @@ ansi-styles@^4.1.0:
   dependencies:
     color-convert "^2.0.1"
 
-anymatch@~3.1.2:
+anymatch@^3.1.3, anymatch@~3.1.2:
   version "3.1.3"
   resolved "https://registry.yarnpkg.com/anymatch/-/anymatch-3.1.3.tgz#790c58b19ba1720a84205b57c618d5ad8524973e"
   integrity sha512-KMReFUr0B4t+D+OBkjR3KYqvocp2XaSzO55UcB6mgQMd3KbcE+mWTyvVV7D/zsdEbNnV6acZUutkiHQXvTr1Rw==
@@ -201,3 +201,13 @@ to-regex-range@^5.0.1:
   integrity sha512-65P7iz6X5yEr1cwcgvQxbbIw7Uk3gOy5dIdtZ4rDveLqhrdJP+Li/Hx6tyK0NEb+2GCyneCMJiGqrADCSNk8sQ==
   dependencies:
     is-number "^7.0.0"
+
+watch-modules@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/watch-modules/-/watch-modules-1.0.0.tgz#2bf0574dd26b08b4f6224abfacfc6fc7c6cebd60"
+  integrity sha512-Fvk7g69ox4ZP/JA5KlOVRlCuhWd1F3cuQdFkbOfB6fegyDQAxJA5yUbsLKaj0dlE+TTFFiv1CVltXjM7fz4PVw==
+  dependencies:
+    anymatch "^3.1.3"
+    chokidar "^3.5.3"
+    clear-module "^4.1.2"
+    debug-symbols "^1.0.2"
