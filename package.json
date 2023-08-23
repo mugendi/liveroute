@@ -1,0 +1,22 @@
+{
+    "name": "liveroute",
+    "version": "1.0.0",
+    "description": "Watch and reload your routes whenever they change without using tools like nodemon",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [
+        "express",
+        "route", "router",
+        "watch",
+        "live",
+        "reload"
+    ],
+    "author": "",
+    "license": "MIT",
+    "dependencies": {
+        "chokidar": "^3.5.3",
+        "require-reload": "^0.2.2"
+    }
+}
